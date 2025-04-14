@@ -32,10 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('admin', AdminController::class);
 
     Route::resource('pesanan', PesananController::class);
-    // Ubah Status Pesanan
+    
     Route::put('pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.update.status');
 
-    // Cetak Nota Pesanan
     Route::get('pesanan/{id}/cetak', [PesananController::class, 'cetakNota'])->name('pesanan.cetak');
 
 
