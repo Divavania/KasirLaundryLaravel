@@ -29,9 +29,6 @@
                         <a class="nav-link" href="{{ route('pelanggan.index') }}">Kelola Pelanggan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('pesanan.index') }}">Input Pesanan</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link text-danger" href="{{ route('logout') }}">Logout</a>
                     </li>
                 @endauth

@@ -6,6 +6,7 @@ use App\Http\Controllers\PesananController; // Tambahkan ini!
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -17,13 +18,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rute dashboard untuk superadmin dan admin
 Route::middleware('auth')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/superadmin/dashboard', function () {
-        return view('dashboard');
-    })->name('superadmin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/superadmin/dashboard', [DashboardController::class, 'index'])->name('superadmin.dashboard');
 
     Route::resource('layanan', LayananController::class);
 

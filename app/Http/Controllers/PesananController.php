@@ -42,7 +42,13 @@ class PesananController extends Controller
     $pesanan->status = 'Diproses'; // Status otomatis 'Diproses'
     $pesanan->save();
 
-    return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil ditambahkan!');
+    // Mengganti pengalihan ke dashboard
+if (auth()->user()->role === 'superadmin') {
+    return redirect()->route('superadmin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
+} else {
+    return redirect()->route('admin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
+}
+
 }
 
 
@@ -66,13 +72,14 @@ class PesananController extends Controller
 
         $pesanan->update($request->all());
 
-        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui');
+        return redirect()->back()->with('success', 'Pesanan berhasil diperbarui');
     }
 
     public function destroy(Pesanan $pesanan)
     {
         $pesanan->delete();
-        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil dihapus');
+        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
+
     }
 
     public function updateStatus(Request $request, $id)
@@ -85,7 +92,8 @@ class PesananController extends Controller
         $pesanan->status = $request->status;
         $pesanan->save();
 
-        return redirect()->route('pesanan.index')->with('success', 'Status pesanan berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
+
     }
 
     public function cetakNota($id)
