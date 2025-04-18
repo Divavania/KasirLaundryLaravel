@@ -3,6 +3,13 @@
 <head><title>Login</title></head>
 <body>
     <h2>Login</h2>
+
+    @if (session('error'))
+        <div style="color:red;">
+            <p>{{ session('error') }}</p>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('login.post') }}">
         @csrf
         <label>Username:</label><br>
@@ -11,6 +18,7 @@
         <input type="password" name="password"><br><br>
         <button type="submit">Login</button>
     </form>
+
     @if($errors->any())
         <div style="color:red;">
             @foreach($errors->all() as $err)
