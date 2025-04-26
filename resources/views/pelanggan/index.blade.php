@@ -3,12 +3,17 @@
 @section('content')
 <div class="container">
     <h2>Kelola Pelanggan</h2>
-    <a href="{{ route('pelanggan.create') }}" class="btn btn-primary mb-3">Tambah Pelanggan</a>
+
+    <!-- Tombol tambah pelanggan -->
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahPelangganModal">
+        Tambah Pelanggan
+    </button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    <!-- Tabel Pelanggan -->
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -25,7 +30,12 @@
                     <td>{{ $item->no_hp }}</td>
                     <td>{{ $item->alamat }}</td>
                     <td>
-                        <a href="{{ route('pelanggan.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <!-- Tombol Edit -->
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPelangganModal{{ $item->id }}">
+                            Edit
+                        </button>
+
+                        <!-- Tombol Hapus -->
                         <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
@@ -37,4 +47,76 @@
         </tbody>
     </table>
 </div>
+
+<!-- Modal Tambah Pelanggan -->
+<div class="modal fade" id="tambahPelangganModal" tabindex="-1" aria-labelledby="tambahPelangganModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('pelanggan.store') }}" method="POST">
+        @csrf
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tambahPelangganModalLabel">Tambah Pelanggan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label for="nama" class="form-label">Nama</label>
+                  <input type="text" name="nama" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="no_hp" class="form-label">No HP</label>
+                  <input type="text" name="no_hp" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="alamat" class="form-label">Alamat</label>
+                  <textarea name="alamat" class="form-control" required></textarea>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Edit Pelanggan (satu untuk tiap pelanggan) -->
+@foreach($pelanggan as $item)
+<div class="modal fade" id="editPelangganModal{{ $item->id }}" tabindex="-1" aria-labelledby="editPelangganModalLabel{{ $item->id }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('pelanggan.update', $item->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPelangganModalLabel{{ $item->id }}">Edit Pelanggan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label for="nama" class="form-label">Nama</label>
+                  <input type="text" name="nama" class="form-control" value="{{ $item->nama }}" required>
+              </div>
+              <div class="mb-3">
+                  <label for="no_hp" class="form-label">No HP</label>
+                  <input type="text" name="no_hp" class="form-control" value="{{ $item->no_hp }}" required>
+              </div>
+              <div class="mb-3">
+                  <label for="alamat" class="form-label">Alamat</label>
+                  <textarea name="alamat" class="form-control" required>{{ $item->alamat }}</textarea>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+@endforeach
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
