@@ -56,11 +56,12 @@ class LayananController extends Controller
     }
 
     public function destroy($id)
-    {
-        $layanan = Layanan::findOrFail($id);
-        $layanan->delete();
+{
+    $layanan = Layanan::findOrFail($id); // Cari layanan berdasarkan ID
+    $layanan->delete(); // Hapus layanan
+    
+    return redirect()->route('layanan.index')->with('success', 'Layanan berhasil dihapus.');
+}
 
-        return redirect()->route('layanan.index');
-    }
 }
 

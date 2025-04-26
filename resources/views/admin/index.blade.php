@@ -3,12 +3,17 @@
 @section('content')
 <div class="container">
     <h2>Kelola Admin</h2>
-    <a href="{{ route('admin.create') }}" class="btn btn-primary mb-3">Tambah Admin</a>
+
+    <!-- Tombol buka modal tambah -->
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahAdminModal">
+        Tambah Admin
+    </button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    <!-- Tabel Admin -->
     <table class="table">
         <thead>
             <tr>
@@ -23,7 +28,12 @@
                     <td>{{ $admin->username }}</td>
                     <td>{{ ucfirst($admin->status) }}</td>
                     <td>
-                        <a href="{{ route('admin.edit', $admin->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <!-- Tombol Edit -->
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAdminModal{{ $admin->id }}">
+                            Edit
+                        </button>
+
+                        <!-- Tombol Hapus -->
                         <form action="{{ route('admin.destroy', $admin->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
@@ -35,4 +45,82 @@
         </tbody>
     </table>
 </div>
+
+<!-- Modal Tambah Admin -->
+<div class="modal fade" id="tambahAdminModal" tabindex="-1" aria-labelledby="tambahAdminModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('admin.store') }}" method="POST">
+        @csrf
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tambahAdminModalLabel">Tambah Admin</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" name="username" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" name="password" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="status" class="form-label">Status</label>
+                  <select name="status" class="form-control" required>
+                      <option value="aktif">Aktif</option>
+                      <option value="nonaktif">Nonaktif</option>
+                  </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Edit Admin untuk setiap admin (DI LUAR TABEL) -->
+@foreach($admins as $admin)
+<div class="modal fade" id="editAdminModal{{ $admin->id }}" tabindex="-1" aria-labelledby="editAdminModalLabel{{ $admin->id }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('admin.update', $admin->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editAdminModalLabel{{ $admin->id }}">Edit Admin</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" name="username" class="form-control" value="{{ $admin->username }}" required>
+              </div>
+              <div class="mb-3">
+                  <label for="password" class="form-label">Password (kosongkan jika tidak diubah)</label>
+                  <input type="password" name="password" class="form-control">
+              </div>
+              <div class="mb-3">
+                  <label for="status" class="form-label">Status</label>
+                  <select name="status" class="form-control" required>
+                      <option value="aktif" {{ $admin->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                      <option value="nonaktif" {{ $admin->status == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                  </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+@endforeach
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

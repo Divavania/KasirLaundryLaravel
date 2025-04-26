@@ -5,19 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pesanan;
+use App\Models\Pelanggan;
+use App\Models\Layanan;
 
 class DashboardController extends Controller
 {
     public function index()
 {
-    $pesanans = Pesanan::with(['pelanggan', 'layanan'])->orderBy('id', 'desc')->get();
+    // Mengambil data pesanan
+    $pesanans = Pesanan::with(['pelanggan', 'layanan'])->get();
 
-    // Hitung total order dan yang selesai langsung dari koleksi
-    $totalPesanan = $pesanans->count();
-    $totalSelesai = $pesanans->where('status', 'Selesai')->count();
+    // Mengambil data pelanggan dan layanan untuk dropdown
+    $pelanggan = Pelanggan::all();
+    $layanan = Layanan::all();
 
-    return view('dashboard', compact('pesanans', 'totalPesanan', 'totalSelesai'));
+    // Menghitung total pesanan dan status selesai
+    $totalPesanan = Pesanan::count();
+    $totalSelesai = Pesanan::where('status', 'Selesai')->count();
+
+    return view('dashboard', compact('pesanans', 'pelanggan', 'layanan', 'totalPesanan', 'totalSelesai'));
 }
+
 
     
 }
