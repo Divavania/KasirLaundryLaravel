@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,80 +7,96 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    @include('layouts.app')
+    @extends('layouts.app')
 
-    <div class="container py-4">
-        <!-- Header -->
-        <div class="text-center mb-4">
-            <h2>Halo, {{ auth()->user()->username }} ({{ auth()->user()->role }})</h2>
-            <p class="text-muted">Selamat datang di sistem kasir laundry!</p>
-        </div>
+    @section('content')
+    <div style="text-align: center;">
+        <h2>Halo, {{ auth()->user()->username }} ({{ auth()->user()->role }})</h2>
+        <p>Selamat datang di sistem kasir laundry!</p>
+    </div>
 
-    <div class="d-flex gap-4 mb-4">
-        <div class="bg-light p-3 rounded flex-fill text-center border">
-            <div class="text-muted small">Total Pesanan</div>
-            <div class="fs-4 fw-semibold text-primary">{{ $totalPesanan }}</div>
+    <div class="row justify-content-center mb-4">
+        <!-- Total Pesanan -->
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3 p-3 mx-2 rounded text-center border border-dark shadow-sm mb-3 mb-md-0" style="background: linear-gradient(to bottom right, #e8f5e9, #ffffff); font-family: 'Poppins', sans-serif;">
+            <div class="text-dark small">Total Pesanan</div>
+            <div class="fs-5 fw-semibold text-dark">{{ $totalPesanan }}</div>
         </div>
-        <div class="bg-light p-3 rounded flex-fill text-center border">
-            <div class="text-muted small">Status Selesai</div>
-            <div class="fs-4 fw-semibold text-success">{{ $totalSelesai }}</div>
+        <!-- Status Selesai -->
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3 p-3 mx-2 rounded text-center border border-dark shadow-sm mb-3 mb-md-0" style="background: linear-gradient(to bottom right, #e8f5e9, #ffffff); font-family: 'Poppins', sans-serif;">
+            <div class="text-dark small">Status Selesai</div>
+            <div class="fs-5 fw-semibold text-dark">{{ $totalSelesai }}</div>
         </div>
     </div>
     <hr>
 
-        <!-- Daftar Pesanan -->
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h4 class="card-title">Daftar Pesanan</h4>
+    <div class="container">
+        <h2 class="text-success">Daftar Pesanan</h2>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         
-        <!-- Tombol untuk membuka modal tambah pesanan -->
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahPesananModal">Tambah Pesanan</button>
+        <!-- Form Pencarian -->
+        <form action="{{ route('dashboard') }}" method="GET" class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control" placeholder="Cari Pesanan" value="{{ request('search') }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success">Cari</button>
+                </div>
+            </div>
+        </form>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Pelanggan</th>
-                    <th>Layanan</th>
-                    <th>Berat (kg)</th>
-                    <th>Total Harga</th>
-                    <th>Status</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pesanans as $pesanan)
-                <tr>
-                    <td>{{ $pesanan->pelanggan->nama }}</td>
-                    <td>{{ $pesanan->layanan->nama_layanan ?? '-' }}</td>
-                    <td>{{ $pesanan->berat }}</td>
-                    <td>Rp {{ number_format($pesanan->total_harga, 0, ',', '.') }}</td>
-                    <td>
-                        <form action="{{ route('pesanan.update.status', $pesanan->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <select name="status" onchange="this.form.submit()">
-                                <option value="Diproses" {{ $pesanan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                                <option value="Selesai" {{ $pesanan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                                <option value="Diambil" {{ $pesanan->status == 'Diambil' ? 'selected' : '' }}>Diambil</option>
-                            </select>
-                        </form>
-                    </td>
-                    <td>{{ $pesanan->tanggal_pesanan }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapusPesananModal{{ $pesanan->id }}">Hapus</button>
-                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailPesananModal{{ $pesanan->id }}">Detail</button>
-                        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#cetakNotaModal{{ $pesanan->id }}">Cetak Nota</button>
-                        <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#cetakBuktiModal{{ $pesanan->id }}">Cetak Bukti Pembayaran</button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <!-- Tombol untuk membuka modal tambah pesanan -->
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahPesananModal">Tambah Pesanan</button>
+
+        <div style="overflow-x: auto;">
+            <table class="table table-bordered">
+                <thead class="table-success">
+                    <tr>
+                        <th>Pelanggan</th>
+                        <th>Layanan</th>
+                        <th>Berat (kg)</th>
+                        <th>Total Harga</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($pesanans as $pesanan)
+                    <tr>
+                        <td>{{ $pesanan->pelanggan->nama }}</td>
+                        <td>{{ $pesanan->layanan->nama_layanan ?? '-' }}</td>
+                        <td>{{ $pesanan->berat }}</td>
+                        <td>Rp {{ number_format($pesanan->total_harga, 0, ',', '.') }}</td>
+                        <td>
+                            <form action="{{ route('pesanan.update.status', $pesanan->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <select name="status" onchange="this.form.submit()">
+                                    <option value="Diproses" {{ $pesanan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                    <option value="Selesai" {{ $pesanan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="Diambil" {{ $pesanan->status == 'Diambil' ? 'selected' : '' }}>Diambil</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>{{ $pesanan->tanggal_pesanan }}</td>
+                        <td style="min-width: 180px;">
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapusPesananModal{{ $pesanan->id }}">Hapus</button>
+                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailPesananModal{{ $pesanan->id }}">Detail</button>
+                                <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#cetakNotaModal{{ $pesanan->id }}">Nota</button>
+                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#cetakBuktiModal{{ $pesanan->id }}">Bukti</button>
+                            </div>
+                        </td>                                     
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        
     </div>
 
     <!-- Modal untuk Tambah Pesanan -->
@@ -89,7 +105,7 @@
             <form action="{{ route('pesanan.store') }}" method="POST">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-success text-white">
                         <h5 class="modal-title" id="tambahPesananModalLabel">Tambah Pesanan Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
@@ -115,7 +131,7 @@
                         <!-- Berat Cucian -->
                         <div class="mb-3">
                             <label for="berat" class="form-label">Berat (kg)</label>
-                            <input type="number" class="form-control" name="berat" required>
+                            <input type="number" class="form-control" name="berat" required step="0.01" min="0">
                         </div>
                         <!-- Harga -->
                         <div class="mb-3">
@@ -125,7 +141,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -137,7 +153,7 @@
     <div class="modal fade" id="detailPesananModal{{ $pesanan->id }}" tabindex="-1" aria-labelledby="detailPesananModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-success text-white">
                     <h5 class="modal-title" id="detailPesananModalLabel">Detail Pesanan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
@@ -160,7 +176,7 @@
     <div class="modal fade" id="cetakNotaModal{{ $pesanan->id }}" tabindex="-1" aria-labelledby="cetakNotaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-success text-white">
                     <h5 class="modal-title" id="cetakNotaModalLabel">Nota Pesanan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
@@ -180,7 +196,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button class="btn btn-primary" onclick="printNota({{ $pesanan->id }})">Cetak</button>
+                    <button class="btn btn-success" onclick="printNota({{ $pesanan->id }})">Cetak</button>
                 </div>
             </div>
         </div>
@@ -191,7 +207,7 @@
     <div class="modal fade" id="cetakBuktiModal{{ $pesanan->id }}" tabindex="-1" aria-labelledby="cetakBuktiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-success text-white">
                     <h5 class="modal-title" id="cetakBuktiModalLabel">Bukti Penerimaan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
@@ -225,7 +241,7 @@
                 @csrf
                 @method('DELETE')
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-success text-white">
                         <h5 class="modal-title" id="hapusPesananModalLabel">Hapus Pesanan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
@@ -259,6 +275,6 @@
             printWindow.document.close();
         }
     </script>
-    
+    @endsection
 </body>
 </html>

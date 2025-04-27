@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container">
-    <h2>Kelola Pelanggan</h2>
+    <h2 class="text-success">Kelola Pelanggan</h2>
 
     <!-- Tombol tambah pelanggan -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahPelangganModal">
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahPelangganModal">
         Tambah Pelanggan
     </button>
 
@@ -15,7 +15,7 @@
 
     <!-- Tabel Pelanggan -->
     <table class="table table-bordered">
-        <thead>
+        <thead class="table-success">
             <tr>
                 <th>Nama</th>
                 <th>No HP</th>
@@ -54,7 +54,7 @@
     <form action="{{ route('pelanggan.store') }}" method="POST">
         @csrf
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="tambahPelangganModalLabel">Tambah Pelanggan</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
           </div>
@@ -74,7 +74,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-success">Simpan</button>
           </div>
         </div>
     </form>
@@ -89,7 +89,7 @@
         @csrf
         @method('PUT')
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="editPelangganModalLabel{{ $item->id }}">Edit Pelanggan</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
           </div>
@@ -109,7 +109,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
           </div>
         </div>
     </form>

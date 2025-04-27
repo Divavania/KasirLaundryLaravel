@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container">
-    <h2>Kelola Layanan</h2>
+    <h2 class="text-success">Kelola Layanan</h2>
 
     <!-- Tombol tambah layanan -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahLayananModal">
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahLayananModal">
         Tambah Layanan
     </button>
 
@@ -14,8 +14,8 @@
     @endif
 
     <!-- Tabel layanan -->
-    <table class="table">
-        <thead>
+    <table class="table table-bordered">
+        <thead class="table-success">
             <tr>
                 <th>Nama Layanan</th>
                 <th>Harga Per Kg</th>
@@ -52,7 +52,7 @@
     <form action="{{ route('layanan.store') }}" method="POST">
         @csrf
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="tambahLayananModalLabel">Tambah Layanan</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
           </div>
@@ -68,7 +68,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-success">Simpan</button>
           </div>
         </div>
     </form>
@@ -83,7 +83,7 @@
         @csrf
         @method('PUT')
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="editLayananModalLabel{{ $item->id }}">Edit Layanan</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
           </div>
@@ -99,7 +99,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
           </div>
         </div>
     </form>

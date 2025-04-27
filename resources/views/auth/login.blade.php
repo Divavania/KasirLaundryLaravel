@@ -1,72 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <title>Login Kasir Laundry</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background: #f4f7f8;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background: #f5f5f5; /* Background putih lembut */
+            font-family: 'Poppins', sans-serif;
         }
+    
         .login-container {
             background: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); /* Lebih soft */
+            width: 380px;
+            animation: fadeIn 1s ease forwards;
         }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
         h2 {
             text-align: center;
-            margin-bottom: 24px;
-            color: #333;
+            margin-bottom: 30px;
+            color: #2e7d32; /* Hijau tua */
+            font-weight: 700;
+            font-size: 26px;
         }
-        label {
-            font-weight: 600;
+    
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 5px;
+            padding-right: 5px;
         }
-        input[type="text"], input[type="password"] {
+    
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #999;
+        }
+    
+        .input-group input {
             width: 100%;
-            padding: 10px 12px;
-            margin: 8px 0 16px;
+            padding: 12px 15px 12px 40px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            transition: border-color 0.3s;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            font-size: 14px;
+            transition: 0.3s;
+            box-sizing: border-box;
         }
-        input:focus {
-            border-color: #007bff;
+    
+        .input-group input:focus {
+            border-color: #4caf50; /* Hijau saat fokus */
+            background-color: #fff;
             outline: none;
         }
+    
         .btn-wrapper {
-        display: flex;
-        justify-content: flex-end;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
         }
+    
         button {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 12px;
-        border: none;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s;
+            background: #4caf50; /* Hijau */
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-
+    
         button:hover {
-            background-color: #0056b3;
+            background: #388e3c; /* Hijau lebih gelap saat hover */
         }
+    
+        .error-message, .success-message {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 16px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    
         .error-message {
-            color: red;
-            font-size: 14px;
-            margin-bottom: 10px;
+            background-color: #ffebee;
+            color: #c62828;
         }
+    
         .success-message {
-            color: green;
-            font-size: 14px;
-            margin-bottom: 10px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
         }
     </style>
+    
 </head>
 <body>
     <div class="login-container">
@@ -80,10 +124,17 @@
 
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
-            <label>Username:</label><br>
-            <input type="text" name="username"><br>
-            <label>Password:</label><br>
-            <input type="password" name="password"><br>
+
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" name="username" placeholder="Masukkan username">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Masukkan password">
+            </div>
+
             <div class="btn-wrapper">
                 <button type="submit">Login</button>
             </div>

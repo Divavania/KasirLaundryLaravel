@@ -10,22 +10,37 @@ use App\Models\Layanan;
 
 class DashboardController extends Controller
 {
-    public function index()
-{
-    // Mengambil data pesanan
-    $pesanans = Pesanan::with(['pelanggan', 'layanan'])->get();
+    public function index(Request $request)
+    {
+        // Membuat query untuk mengambil semua data pesanan
+        $query = Pesanan::with(['pelanggan', 'layanan']);
+        
+        // Mengecek apakah ada input pencarian
+        if ($request->has('search') && $request->input('search') != '') {
+            $search = $request->input('search');
+            
+            // Mencari berdasarkan nama pelanggan atau nama layanan
+            $query->whereHas('pelanggan', function ($q) use ($search) {
+                $q->where('nama', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('layanan', function ($q) use ($search) {
+                $q->where('nama_layanan', 'like', '%' . $search . '%');
+            });
+        }
 
-    // Mengambil data pelanggan dan layanan untuk dropdown
-    $pelanggan = Pelanggan::all();
-    $layanan = Layanan::all();
+        // Menjalankan query dan mendapatkan hasil pesanan
+        $pesanans = $query->get();
 
-    // Menghitung total pesanan dan status selesai
-    $totalPesanan = Pesanan::count();
-    $totalSelesai = Pesanan::where('status', 'Selesai')->count();
+        // Mengambil data pelanggan dan layanan untuk dropdown
+        $pelanggan = Pelanggan::all();
+        $layanan = Layanan::all();
 
-    return view('dashboard', compact('pesanans', 'pelanggan', 'layanan', 'totalPesanan', 'totalSelesai'));
-}
+        // Menghitung total pesanan dan status selesai
+        $totalPesanan = Pesanan::count();  // Menghitung total pesanan tanpa filter status
+        $totalSelesai = Pesanan::where('status', 'Selesai')->count();
 
+        // Mengembalikan data ke view
+        return view('dashboard', compact('pesanans', 'pelanggan', 'layanan', 'totalPesanan', 'totalSelesai'));
+    }
 
-    
 }
