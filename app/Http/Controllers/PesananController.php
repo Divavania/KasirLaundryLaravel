@@ -32,13 +32,18 @@ class PesananController extends Controller
         'berat' => 'required|numeric',
     ]);
 
+   // Ambil layanan yang dipilih untuk menghitung total harga
+   $layanan = Layanan::find($request->layanan_id);
+   // Hitung total harga
+   $total_harga = $layanan->harga_per_kg * $request->berat;
+   
     // Menyimpan pesanan dengan status otomatis 'Diproses'
     $pesanan = new Pesanan();
     $pesanan->pelanggan_id = $request->pelanggan_id;
     $pesanan->layanan_id = $request->layanan_id;
     $pesanan->berat = $request->berat;
     $layanan = Layanan::find($request->layanan_id);
-    $pesanan->total_harga = $layanan->harga_per_kg * $request->berat;
+    $pesanan->total_harga = $total_harga;
     $pesanan->status = 'Diproses'; // Status otomatis 'Diproses'
     $pesanan->save();
 
@@ -78,7 +83,7 @@ if (auth()->user()->role === 'superadmin') {
     public function destroy(Pesanan $pesanan)
     {
         $pesanan->delete();
-        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
 
     }
 

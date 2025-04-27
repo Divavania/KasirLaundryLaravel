@@ -113,10 +113,11 @@
                         <!-- Pilih Pelanggan -->
                         <div class="mb-3">
                             <label for="pelanggan_id" class="form-label">Pilih Pelanggan</label>
-                            <select name="pelanggan_id" class="form-control" required>
-                                @foreach($pelanggan as $p)
-                                    <option value="{{ $p->id }}">{{ $p->nama }}</option>
-                                @endforeach
+                            <select name="pelanggan_id" class="select2 form-control" style="width: 100%;" required>
+                            <option></option>      {{-- placeholder kosong --}}
+                            @foreach($pelanggan as $p)
+                                <option value="{{ $p->id }}">{{ $p->nama }}</option>
+                            @endforeach
                             </select>
                         </div>
                         <!-- Pilih Layanan -->
@@ -257,6 +258,23 @@
         </div>
     </div>
     @endforeach
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const beratInput = document.querySelector('input[name="berat"]');
+    const totalHargaInput = document.querySelector('input[name="total_harga"]');
+    
+    // Harga per kg. Contoh 12000. Ini HARUS sesuai layanan yang dipilih.
+    const hargaPerKg = 4000; // sementara manual, nanti bisa dinamis
+
+    beratInput.addEventListener('input', function () {
+        const berat = parseFloat(beratInput.value) || 0;
+        const totalHarga = berat * hargaPerKg;
+        totalHargaInput.value = totalHarga;
+    });
+});
+</script>
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
