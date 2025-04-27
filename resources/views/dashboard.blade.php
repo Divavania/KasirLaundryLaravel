@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,12 @@
 <body>
     @include('layouts.app')
 
-    <div style="text-align: center;">
-        <h2>Halo, {{ auth()->user()->username }} ({{ auth()->user()->role }})</h2>
-        <p>Selamat datang di sistem kasir laundry!</p>
-    </div>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h2>Halo, {{ auth()->user()->username }} ({{ auth()->user()->role }})</h2>
+            <p class="text-muted">Selamat datang di sistem kasir laundry!</p>
+        </div>
 
     <div class="d-flex gap-4 mb-4">
         <div class="bg-light p-3 rounded flex-fill text-center border">
@@ -26,8 +28,10 @@
     </div>
     <hr>
 
-    <div class="container">
-        <h2>Daftar Pesanan</h2>
+        <!-- Daftar Pesanan -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Daftar Pesanan</h4>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
