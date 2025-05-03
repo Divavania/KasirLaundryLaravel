@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container">
-    <h2>Kelola Admin</h2>
+    <h2 class="text-success">Kelola Admin</h2>
 
     <!-- Tombol buka modal tambah -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahAdminModal">
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahAdminModal">
         Tambah Admin
     </button>
 
@@ -14,8 +14,8 @@
     @endif
 
     <!-- Tabel Admin -->
-    <table class="table">
-        <thead>
+    <table class="table table-bordered">
+        <thead class="table-success">
             <tr>
                 <th>Username</th>
                 <th>Status</th>
