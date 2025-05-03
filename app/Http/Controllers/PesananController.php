@@ -15,7 +15,6 @@ class PesananController extends Controller
         return view('pesanan.index', compact('pesanans'));
     }
 
-
     public function create()
     {
         $pelanggans = Pelanggan::all();
@@ -24,39 +23,37 @@ class PesananController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'pelanggan_id' => 'required',
-        'layanan_id' => 'required',
-        'berat' => 'required|numeric',
-    ]);
+    {
+        // Validasi input
+        $request->validate([
+            'pelanggan_id' => 'required',
+            'layanan_id' => 'required',
+            'berat' => 'required|numeric',
+        ]);
 
-   // Ambil layanan yang dipilih untuk menghitung total harga
-   $layanan = Layanan::find($request->layanan_id);
-   // Hitung total harga
-   $total_harga = $layanan->harga_per_kg * $request->berat;
-   
-    // Menyimpan pesanan dengan status otomatis 'Diproses'
-    $pesanan = new Pesanan();
-    $pesanan->pelanggan_id = $request->pelanggan_id;
-    $pesanan->layanan_id = $request->layanan_id;
-    $pesanan->berat = $request->berat;
+    // Ambil layanan yang dipilih untuk menghitung total harga
     $layanan = Layanan::find($request->layanan_id);
-    $pesanan->total_harga = $total_harga;
-    $pesanan->status = 'Diproses'; // Status otomatis 'Diproses'
-    $pesanan->save();
+    // Hitung total harga
+    $total_harga = $layanan->harga_per_kg * $request->berat;
+    
+        // Menyimpan pesanan dengan status otomatis 'Diproses'
+        $pesanan = new Pesanan();
+        $pesanan->pelanggan_id = $request->pelanggan_id;
+        $pesanan->layanan_id = $request->layanan_id;
+        $pesanan->berat = $request->berat;
+        $layanan = Layanan::find($request->layanan_id);
+        $pesanan->total_harga = $total_harga;
+        $pesanan->status = 'Diproses'; // Status otomatis 'Diproses'
+        $pesanan->save();
 
-    // Mengganti pengalihan ke dashboard
-if (auth()->user()->role === 'superadmin') {
-    return redirect()->route('superadmin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
-} else {
-    return redirect()->route('admin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
-}
+        // Mengganti pengalihan ke dashboard
+    if (auth()->user()->role === 'superadmin') {
+        return redirect()->route('superadmin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
+    } else {
+        return redirect()->route('admin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
+    }
 
-}
-
-
+    }
 
     public function edit(Pesanan $pesanan)
     {
@@ -106,7 +103,4 @@ if (auth()->user()->role === 'superadmin') {
         $pesanan = Pesanan::with('pelanggan', 'layanan')->findOrFail($id);
         return view('pesanan.nota', compact('pesanan'));
     }
-
-
-
 }

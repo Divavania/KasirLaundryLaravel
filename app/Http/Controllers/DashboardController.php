@@ -42,5 +42,4 @@ class DashboardController extends Controller
         // Mengembalikan data ke view
         return view('dashboard', compact('pesanans', 'pelanggan', 'layanan', 'totalPesanan', 'totalSelesai'));
     }
-
 }
