@@ -5,9 +5,7 @@
     <h2 class="text-success">Kelola Pelanggan</h2>
 
     <!-- Tombol tambah pelanggan -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahPelangganModal">
-        Tambah Pelanggan
-    </button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahPelangganModal">Tambah Pelanggan</button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -31,10 +29,7 @@
                     <td>{{ $item->alamat }}</td>
                     <td>
                         <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPelangganModal{{ $item->id }}">
-                            Edit
-                        </button>
-
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPelangganModal{{ $item->id }}">Edit</button>
                         <!-- Tombol Hapus -->
                         <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                             @csrf

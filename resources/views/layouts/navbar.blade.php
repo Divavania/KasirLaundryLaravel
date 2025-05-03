@@ -36,9 +36,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container">
-        <a class="navbar-brand" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">
-            Kasir Laundry
-        </a>
+        <a class="navbar-brand" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">Kasir Laundry</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -48,16 +46,12 @@
             <ul class="navbar-nav ms-auto">
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">
-                        Dashboard
-                    </a>
+                    <a class="nav-link" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">Dashboard</a>
                 </li>
 
                 @if(auth()->user()->role == 'superadmin')
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="kelolaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Master Data
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" id="kelolaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Master Data</a>
                         <ul class="dropdown-menu" aria-labelledby="kelolaDropdown">
                             <li><a class="dropdown-item" href="{{ route('admin.index') }}">Kelola Admin</a></li>
                             <li><a class="dropdown-item" href="{{ route('layanan.index') }}">Kelola Layanan</a></li>

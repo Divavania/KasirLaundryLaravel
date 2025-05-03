@@ -5,9 +5,7 @@
     <h2 class="text-success">Kelola Layanan</h2>
 
     <!-- Tombol tambah layanan -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahLayananModal">
-        Tambah Layanan
-    </button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahLayananModal">Tambah Layanan</button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

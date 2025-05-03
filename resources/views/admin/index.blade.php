@@ -5,9 +5,7 @@
     <h2 class="text-success">Kelola Admin</h2>
 
     <!-- Tombol buka modal tambah -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahAdminModal">
-        Tambah Admin
-    </button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahAdminModal">Tambah Admin</button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -29,9 +27,7 @@
                     <td>{{ ucfirst($admin->status) }}</td>
                     <td>
                         <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAdminModal{{ $admin->id }}">
-                            Edit
-                        </button>
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAdminModal{{ $admin->id }}">Edit</button>
 
                         <!-- Tombol Hapus -->
                         <form action="{{ route('admin.destroy', $admin->id) }}" method="POST" style="display:inline-block;">
