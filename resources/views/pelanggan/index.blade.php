@@ -4,16 +4,12 @@
 <div class="container">
     <h2 class="text-success">Kelola Pelanggan</h2>
 
-    <!-- Tombol tambah pelanggan -->
-    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahPelangganModal">
-        Tambah Pelanggan
-    </button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahPelangganModal">Tambah Pelanggan</button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Tabel Pelanggan -->
     <table class="table table-bordered">
         <thead class="table-success">
             <tr>
@@ -31,11 +27,7 @@
                     <td>{{ $item->alamat }}</td>
                     <td>
                         <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPelangganModal{{ $item->id }}">
-                            Edit
-                        </button>
-
-                        <!-- Tombol Hapus -->
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPelangganModal{{ $item->id }}">Edit</button>
                         <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')

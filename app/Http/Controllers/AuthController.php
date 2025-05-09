@@ -50,10 +50,8 @@ class AuthController extends Controller
             return back()->with('error', 'Akun Anda nonaktif.');
         }
 
-        // ✅ Login manual Laravel
         Auth::guard('web')->login($user);
 
-        // ✅ Arahkan ke dashboard sesuai role
         if ($user->role === 'superadmin') {
             return redirect()->route('superadmin.dashboard');
         } else {
@@ -67,4 +65,3 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 }
-

@@ -44,9 +44,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">
-            Kasir Laundry
-        </a>
+        <a class="navbar-brand" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">Kasir Laundry</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -56,16 +54,12 @@
             <ul class="navbar-nav ml-auto">
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">
-                        Dashboard
-                    </a>
+                    <a class="nav-link" href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.dashboard') : route('admin.dashboard') }}">Dashboard</a>
                 </li>
 
                 @if(auth()->user()->role == 'superadmin')
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="kelolaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Master Data
-                    </a>
+                    <a class="nav-link dropdown-toggle" href="#" id="kelolaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Master Data</a>
                     <div class="dropdown-menu" aria-labelledby="kelolaDropdown">
                         <a class="dropdown-item" href="{{ route('admin.index') }}">Kelola Admin</a>
                         <a class="dropdown-item" href="{{ route('layanan.index') }}">Kelola Layanan</a>

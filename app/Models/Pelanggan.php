@@ -10,5 +10,4 @@ class Pelanggan extends Model
 
     protected $fillable = ['nama', 'no_hp', 'alamat'];
 }
-
 ?>

@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f5f5f5; /* Background putih lembut */
+            background: #f5f5f5;
             font-family: 'Poppins', sans-serif;
         }
     
@@ -20,7 +20,7 @@
             background: #ffffff;
             padding: 40px 30px;
             border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); /* Lebih soft */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
             width: 380px;
             animation: fadeIn 1s ease forwards;
         }
@@ -33,7 +33,7 @@
         h2 {
             text-align: center;
             margin-bottom: 30px;
-            color: #2e7d32; /* Hijau tua */
+            color: #2e7d32;
             font-weight: 700;
             font-size: 26px;
         }
@@ -65,7 +65,7 @@
         }
     
         .input-group input:focus {
-            border-color: #4caf50; /* Hijau saat fokus */
+            border-color: #4caf50;
             background-color: #fff;
             outline: none;
         }
@@ -77,7 +77,7 @@
         }
     
         button {
-            background: #4caf50; /* Hijau */
+            background: #4caf50;
             color: #fff;
             padding: 12px 30px;
             border: none;
@@ -89,7 +89,7 @@
         }
     
         button:hover {
-            background: #388e3c; /* Hijau lebih gelap saat hover */
+            background: #388e3c;
         }
     
         .error-message, .success-message {

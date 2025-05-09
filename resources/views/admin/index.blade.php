@@ -4,16 +4,12 @@
 <div class="container">
     <h2 class="text-success">Kelola Admin</h2>
 
-    <!-- Tombol buka modal tambah -->
-    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahAdminModal">
-        Tambah Admin
-    </button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahAdminModal">Tambah Admin</button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Tabel Admin -->
     <table class="table table-bordered">
         <thead class="table-success">
             <tr>
@@ -28,12 +24,7 @@
                     <td>{{ $admin->username }}</td>
                     <td>{{ ucfirst($admin->status) }}</td>
                     <td>
-                        <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editAdminModal{{ $admin->id }}">
-                            Edit
-                        </button>
-
-                        <!-- Tombol Hapus -->
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editAdminModal{{ $admin->id }}">Edit</button>
                         <form action="{{ route('admin.destroy', $admin->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')

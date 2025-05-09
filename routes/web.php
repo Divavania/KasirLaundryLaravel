@@ -1,8 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PesananController; // Tambahkan ini!
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\AdminController;
@@ -34,7 +33,4 @@ Route::middleware('auth')->group(function () {
     Route::put('pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.update.status');
 
     Route::get('pesanan/{id}/cetak', [PesananController::class, 'cetakNota'])->name('pesanan.cetak');
-
-
 });
-
