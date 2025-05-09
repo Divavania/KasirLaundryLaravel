@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Layanan extends Model
 {
-    protected $table = 'layanan'; // karena bukan plural
+    protected $table = 'layanan';
     protected $fillable = ['nama_layanan', 'harga_per_kg'];
-    public $timestamps = false; // jika tabel tidak pakai created_at dan updated_at
+    public $timestamps = false;
+
+    public function pesanan()
+    {
+        return $this->belongsToMany(Pesanan::class, 'pesanan_layanan')
+                    ->withPivot('berat', 'subtotal');
+    }
 }

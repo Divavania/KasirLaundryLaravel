@@ -6,6 +6,8 @@ use App\Models\Pesanan;
 use App\Models\Pelanggan;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PesananController extends Controller
 {
@@ -24,35 +26,57 @@ class PesananController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'pelanggan_id' => 'required',
-            'layanan_id' => 'required',
-            'berat' => 'required|numeric',
+            'pelanggan_id' => 'required|exists:pelanggan,id',
+            'layanan_id' => 'required|array',
+            'layanan_id.*' => 'exists:layanan,id',
+            'berat' => 'required|array',
+            'berat.*' => 'numeric|min:0.01',
         ]);
 
-    // Ambil layanan yang dipilih untuk menghitung total harga
-    $layanan = Layanan::find($request->layanan_id);
-    // Hitung total harga
-    $total_harga = $layanan->harga_per_kg * $request->berat;
-    
-        // Menyimpan pesanan dengan status otomatis 'Diproses'
-        $pesanan = new Pesanan();
-        $pesanan->pelanggan_id = $request->pelanggan_id;
-        $pesanan->layanan_id = $request->layanan_id;
-        $pesanan->berat = $request->berat;
-        $layanan = Layanan::find($request->layanan_id);
-        $pesanan->total_harga = $total_harga;
-        $pesanan->status = 'Diproses'; // Status otomatis 'Diproses'
-        $pesanan->save();
+        try {
+            DB::beginTransaction();
 
-        // Mengganti pengalihan ke dashboard
-    if (auth()->user()->role === 'superadmin') {
-        return redirect()->route('superadmin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
-    } else {
-        return redirect()->route('admin.dashboard')->with('success', 'Pesanan berhasil ditambahkan!');
-    }
+            Log::info('Store Request Data: ', $request->all());
 
+            $total_harga = 0;
+            $syncData = [];
+
+            foreach ($request->layanan_id as $layananId) {
+                $layanan = Layanan::findOrFail($layananId);
+                $berat = floatval($request->berat[$layananId]);
+                $harga_per_kg = floatval($layanan->harga_per_kg);
+                $subtotal = $berat * $harga_per_kg;
+                $total_harga += $subtotal;
+
+                $syncData[$layananId] = [
+                    'berat' => $berat,
+                    'subtotal' => $subtotal,
+                ];
+
+                Log::info("Layanan ID: $layananId, Berat: $berat, Harga per kg: $harga_per_kg, Subtotal: $subtotal");
+            }
+
+            Log::info("Total Harga: $total_harga");
+
+            $pesanan = Pesanan::create([
+                'pelanggan_id' => $request->pelanggan_id,
+                'status' => 'Diproses',
+                'tanggal_pesanan' => now()->timezone('Asia/Jakarta'),
+                'total_harga' => $total_harga,
+            ]);
+
+            $pesanan->layanan()->sync($syncData);
+
+            DB::commit();
+
+            return redirect()->route(auth()->user()->role === 'superadmin' ? 'superadmin.dashboard' : 'admin.dashboard')
+                            ->with('success', 'Pesanan berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error storing pesanan: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Gagal menambahkan pesanan: ' . $e->getMessage());
+        }
     }
 
     public function edit(Pesanan $pesanan)
@@ -66,22 +90,64 @@ class PesananController extends Controller
     {
         $request->validate([
             'pelanggan_id' => 'required|exists:pelanggan,id',
-            'layanan_id' => 'required|exists:layanan,id',
-            'berat' => 'required|numeric|min:0.1',
-            'total_harga' => 'required|numeric',
+            'layanan_id' => 'required|array',
+            'layanan_id.*' => 'exists:layanan,id',
+            'berat' => 'required|array',
+            'berat.*' => 'numeric|min:0.01',
             'status' => 'required|in:Diproses,Selesai,Diambil',
         ]);
 
-        $pesanan->update($request->all());
+        try {
+            DB::beginTransaction();
 
-        return redirect()->back()->with('success', 'Pesanan berhasil diperbarui');
+            $total_harga = 0;
+            $syncData = [];
+
+            foreach ($request->layanan_id as $index => $layananId) {
+                $layanan = Layanan::findOrFail($layananId);
+                $berat = floatval($request->berat[$index]);
+                $subtotal = $berat * floatval($layanan->harga_per_kg);
+                $total_harga += $subtotal;
+
+                $syncData[$layananId] = [
+                    'berat' => $berat,
+                    'subtotal' => $subtotal,
+                ];
+            }
+
+            $pesanan->update([
+                'pelanggan_id' => $request->pelanggan_id,
+                'status' => $request->status,
+                'total_harga' => $total_harga,
+            ]);
+
+            $pesanan->layanan()->sync($syncData);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Pesanan berhasil diperbarui');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error updating pesanan: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Gagal memperbarui pesanan: ' . $e->getMessage());
+        }
     }
 
-    public function destroy(Pesanan $pesanan)
+    public function destroy(Request $request, Pesanan $pesanan)
     {
-        $pesanan->delete();
-        return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
-
+        try {
+            $pesanan->delete();
+            if ($request->ajax()) {
+                return response()->json(['success' => 'Pesanan berhasil dihapus.']);
+            }
+            return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting pesanan: ' . $e->getMessage());
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Gagal menghapus pesanan: ' . $e->getMessage()], 500);
+            }
+            return redirect()->back()->withErrors('Gagal menghapus pesanan: ' . $e->getMessage());
+        }
     }
 
     public function updateStatus(Request $request, $id)
@@ -90,12 +156,16 @@ class PesananController extends Controller
             'status' => 'required|in:Diproses,Selesai,Diambil'
         ]);
 
-        $pesanan = Pesanan::findOrFail($id);
-        $pesanan->status = $request->status;
-        $pesanan->save();
+        try {
+            $pesanan = Pesanan::findOrFail($id);
+            $pesanan->status = $request->status;
+            $pesanan->save();
 
-        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
-
+            return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            Log::error('Error updating status: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Gagal memperbarui status: ' . $e->getMessage());
+        }
     }
 
     public function cetakNota($id)

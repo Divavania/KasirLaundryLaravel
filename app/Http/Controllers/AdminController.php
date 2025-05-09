@@ -68,4 +68,3 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus!');
     }
 }
-

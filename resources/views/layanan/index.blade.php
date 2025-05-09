@@ -5,7 +5,9 @@
     <h2 class="text-success">Kelola Layanan</h2>
 
     <!-- Tombol tambah layanan -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahLayananModal">Tambah Layanan</button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahLayananModal">
+        Tambah Layanan
+    </button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -27,7 +29,7 @@
                     <td>Rp {{ number_format($item->harga_per_kg, 0, ',', '.') }}</td>
                     <td>
                         <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editLayananModal{{ $item->id }}">
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editLayananModal{{ $item->id }}">
                             Edit
                         </button>
 
@@ -45,14 +47,16 @@
 </div>
 
 <!-- Modal Tambah Layanan -->
-<div class="modal fade" id="tambahLayananModal" tabindex="-1" aria-labelledby="tambahLayananModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="tambahLayananModal" tabindex="-1" role="dialog" aria-labelledby="tambahLayananModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <form action="{{ route('layanan.store') }}" method="POST">
         @csrf
         <div class="modal-content">
           <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="tambahLayananModalLabel">Tambah Layanan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -65,7 +69,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
             <button type="submit" class="btn btn-success">Simpan</button>
           </div>
         </div>
@@ -75,15 +79,17 @@
 
 <!-- Modal Edit Layanan (satu untuk tiap layanan) -->
 @foreach ($layanan as $item)
-<div class="modal fade" id="editLayananModal{{ $item->id }}" tabindex="-1" aria-labelledby="editLayananModalLabel{{ $item->id }}" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="editLayananModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editLayananModalLabel{{ $item->id }}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <form action="{{ route('layanan.update', $item->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="modal-content">
           <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="editLayananModalLabel{{ $item->id }}">Edit Layanan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -96,7 +102,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
             <button type="submit" class="btn btn-success">Simpan Perubahan</button>
           </div>
         </div>
@@ -104,7 +110,4 @@
   </div>
 </div>
 @endforeach
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

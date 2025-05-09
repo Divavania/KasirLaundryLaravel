@@ -5,7 +5,9 @@
     <h2 class="text-success">Kelola Admin</h2>
 
     <!-- Tombol buka modal tambah -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahAdminModal">Tambah Admin</button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahAdminModal">
+        Tambah Admin
+    </button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -27,7 +29,9 @@
                     <td>{{ ucfirst($admin->status) }}</td>
                     <td>
                         <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAdminModal{{ $admin->id }}">Edit</button>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editAdminModal{{ $admin->id }}">
+                            Edit
+                        </button>
 
                         <!-- Tombol Hapus -->
                         <form action="{{ route('admin.destroy', $admin->id) }}" method="POST" style="display:inline-block;">
@@ -43,14 +47,16 @@
 </div>
 
 <!-- Modal Tambah Admin -->
-<div class="modal fade" id="tambahAdminModal" tabindex="-1" aria-labelledby="tambahAdminModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="tambahAdminModal" tabindex="-1" role="dialog" aria-labelledby="tambahAdminModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <form action="{{ route('admin.store') }}" method="POST">
         @csrf
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="tambahAdminModalLabel">Tambah Admin</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -70,7 +76,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
           </div>
         </div>
@@ -78,17 +84,19 @@
   </div>
 </div>
 
-<!-- Modal Edit Admin untuk setiap admin (DI LUAR TABEL) -->
+<!-- Modal Edit Admin untuk setiap admin -->
 @foreach($admins as $admin)
-<div class="modal fade" id="editAdminModal{{ $admin->id }}" tabindex="-1" aria-labelledby="editAdminModalLabel{{ $admin->id }}" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="editAdminModal{{ $admin->id }}" tabindex="-1" role="dialog" aria-labelledby="editAdminModalLabel{{ $admin->id }}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <form action="{{ route('admin.update', $admin->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editAdminModalLabel{{ $admin->id }}">Edit Admin</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -108,7 +116,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
           </div>
         </div>
@@ -116,7 +124,4 @@
   </div>
 </div>
 @endforeach
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

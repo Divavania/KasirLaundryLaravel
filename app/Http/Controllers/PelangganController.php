@@ -56,3 +56,4 @@ class PelangganController extends Controller
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil dihapus!');
     }
 }
+

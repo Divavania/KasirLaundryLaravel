@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,8 +10,7 @@ class Pesanan extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'pelanggan_id', 'layanan_id', 'berat', 'total_harga',
-        'status', 'tanggal_pesanan'
+        'pelanggan_id', 'status', 'tanggal_pesanan', 'total_harga'
     ];
 
     public function pelanggan()
@@ -20,9 +20,7 @@ class Pesanan extends Model
 
     public function layanan()
     {
-        return $this->belongsTo(Layanan::class);
+        return $this->belongsToMany(Layanan::class, 'pesanan_layanan')
+                    ->withPivot('berat', 'subtotal');
     }
-
 }
-
-?>

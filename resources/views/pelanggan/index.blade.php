@@ -5,7 +5,9 @@
     <h2 class="text-success">Kelola Pelanggan</h2>
 
     <!-- Tombol tambah pelanggan -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahPelangganModal">Tambah Pelanggan</button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahPelangganModal">
+        Tambah Pelanggan
+    </button>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -29,7 +31,10 @@
                     <td>{{ $item->alamat }}</td>
                     <td>
                         <!-- Tombol Edit -->
-                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPelangganModal{{ $item->id }}">Edit</button>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPelangganModal{{ $item->id }}">
+                            Edit
+                        </button>
+
                         <!-- Tombol Hapus -->
                         <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                             @csrf
@@ -44,14 +49,16 @@
 </div>
 
 <!-- Modal Tambah Pelanggan -->
-<div class="modal fade" id="tambahPelangganModal" tabindex="-1" aria-labelledby="tambahPelangganModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="tambahPelangganModal" tabindex="-1" role="dialog" aria-labelledby="tambahPelangganModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <form action="{{ route('pelanggan.store') }}" method="POST">
         @csrf
         <div class="modal-content">
           <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="tambahPelangganModalLabel">Tambah Pelanggan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -68,7 +75,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
             <button type="submit" class="btn btn-success">Simpan</button>
           </div>
         </div>
@@ -78,15 +85,17 @@
 
 <!-- Modal Edit Pelanggan (satu untuk tiap pelanggan) -->
 @foreach($pelanggan as $item)
-<div class="modal fade" id="editPelangganModal{{ $item->id }}" tabindex="-1" aria-labelledby="editPelangganModalLabel{{ $item->id }}" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="editPelangganModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editPelangganModalLabel{{ $item->id }}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <form action="{{ route('pelanggan.update', $item->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="modal-content">
           <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="editPelangganModalLabel{{ $item->id }}">Edit Pelanggan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -103,7 +112,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
             <button type="submit" class="btn btn-success">Simpan Perubahan</button>
           </div>
         </div>
@@ -111,7 +120,4 @@
   </div>
 </div>
 @endforeach
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
