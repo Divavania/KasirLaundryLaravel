@@ -8,30 +8,217 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e8f5e9, #f5f5f5);
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="30" cy="30" r="20" fill="rgba(40,167,69,0.1)"/><circle cx="170" cy="50" r="15" fill="rgba(40,167,69,0.15)"/><circle cx="100" cy="150" r="25" fill="rgba(40,167,69,0.1)"/><circle cx="50" cy="100" r="10" fill="rgba(40,167,69,0.2)"/></svg>');
+            background-size: 400px;
+            opacity: 0.25;
+            z-index: -1;
+            animation: float 25s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0); }
+        }
+        .welcome-card {
+            background: #ffffff;
+            border: 1px solid rgba(40, 167, 69, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .welcome-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .welcome-card::before {
+            content: '\f7e4';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 40px;
+            color: rgba(40, 167, 69, 0.15);
+            opacity: 0.5;
+        }
+        .welcome-card h2::before {
+            content: 'Khalifah Laundry';
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #28a745;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stats-card {
+            background: #ffffff;
+            border: 1px solid rgba(40, 167, 69, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #28a745;
+        }
+        .stats-card .small {
+            font-size: 0.9rem;
+            color: #495057;
+            font-weight: 400;
+        }
+        .stats-card .fs-5 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        .table-responsive {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+        .table-success {
+            background: #e8f5e9 !important;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+        .table th {
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        .table tbody tr:hover {
+            background: rgba(232, 245, 233, 0.5);
+        }
+        .btn-success {
+            background: #28a745;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            background: #2e7d32;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-sm {
+            border-radius: 6px;
+        }
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .modal-header.bg-success {
+            background: #28a745;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .modal-body {
+            background: #ffffff;
+            padding: 1.5rem;
+        }
+        .form-control, .select2-container--default .select2-selection--single {
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            background: #f8faf8;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .select2-container--default .select2-selection--single:focus {
+            border-color: #2e7d32;
+            box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
+            background: #fff;
+        }
+        .form-control::placeholder {
+            color: #999;
+            font-weight: 300;
+        }
+        @media (max-width: 576px) {
+            .welcome-card {
+                padding: 1.5rem;
+            }
+            .welcome-card h2 {
+                font-size: 1.5rem;
+            }
+            .welcome-card h2::before {
+                font-size: 1rem;
+            }
+            .stats-card .fs-5 {
+                font-size: 1.2rem;
+            }
+            .table th, .table td {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
     @extends('layouts.app')
 
     @section('content')
-    <div style="text-align: center;">
-        <h2>Halo, {{ auth()->user()->username }} ({{ auth()->user()->role }})</h2>
-        <p>Selamat datang di sistem kasir laundry!</p>
+    <div class="d-flex justify-content-center mb-4">
+        <div class="welcome-card" style="max-width: 500px; width: 90%; text-align: center;">
+            <h2 class="mb-2 text-success" style="font-size: 1.75rem; font-weight: 500;">
+                Halo, {{ auth()->user()->username }} 
+                <span style="font-size: 1.1rem; font-weight: 400; color: #6c757d;">({{ auth()->user()->role }})</span>
+            </h2>
+            <p class="mb-0" style="font-size: 1rem; font-weight: 400; color: #495057;">Selamat datang di sistem kasir laundry</p>
+        </div>
     </div>
 
     <div class="row justify-content-center mb-4">
-        <div class="col-10 col-sm-6 col-md-4 col-lg-3 p-3 mx-2 rounded text-center border border-dark shadow-sm mb-3 mb-md-0" style="background: linear-gradient(to bottom right, #e8f5e9, #ffffff); font-family: 'Poppins', sans-serif;">
-            <div class="text-dark small">Total Pesanan</div>
-            <div class="fs-5 fw-semibold text-dark">{{ $totalPesanan }}</div>
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3 p-0 mx-2 mb-3 mb-md-0 stats-card">
+            <div class="text-center p-3">
+                <div class="small">Total Pesanan</div>
+                <div class="fs-5 fw-semibold">{{ $totalPesanan }}</div>
+            </div>
         </div>
-        <div class="col-10 col-sm-6 col-md-4 col-lg-3 p-3 mx-2 rounded text-center border border-dark shadow-sm mb-3 mb-md-0" style="background: linear-gradient(to bottom right, #e8f5e9, #ffffff); font-family: 'Poppins', sans-serif;">
-            <div class="text-dark small">Status Selesai</div>
-            <div class="fs-5 fw-semibold text-dark">{{ $totalSelesai }}</div>
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3 p-0 mx-2 mb-3 mb-md-0 stats-card">
+            <div class="text-center p-3">
+                <div class="small">Status Selesai</div>
+                <div class="fs-5 fw-semibold">{{ $totalSelesai }}</div>
+            </div>
         </div>
     </div>
     <hr>
 
     <div class="container">
-        <h2 class="text-success">Daftar Pesanan</h2>
+        <h2 class="text-success mb-3">Daftar Pesanan</h2>
 
         <form action="{{ route('dashboard') }}" method="GET" class="mb-3">
             <div class="row d-flex align-items-center flex-wrap">
@@ -39,7 +226,9 @@
                     <input type="text" name="search" class="form-control w-100" placeholder="Cari Pesanan" value="{{ request('search') }}">
                 </div>
                 <div class="col-4 col-md-2">
-                    <button type="submit" class="btn btn-success w-100">Cari</button>
+                    <button type="submit" class="btn btn-success w-100 d-flex align-items-center justify-content-center" style="padding: 8px;">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
             </div>
         </form>
@@ -140,7 +329,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="pelanggan_id" class="form-label">Pilih Pelanggan</label>
-                            <select name="pelanggan_id" class="select2 form-control" style="width: 100%;" required>
+                            <select name="pelanggan_id" class="select2 form-control" style="width: 100%; border-color: #4caf50;" required>
                                 <option></option>
                                 @foreach($pelanggan as $p)
                                     <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -151,7 +340,7 @@
                             <label for="layanan" class="form-label">Pilih Layanan</label>
                             @foreach($layanan as $l)
                                 <div class="form-check mb-2">
-                                    <input type="checkbox" name="layanan_id[]" value="{{ $l->id }}" class="form-check-input layanan-checkbox" id="layanan-{{ $l->id }}">
+                                    <input type="checkbox" name="layanan_id[]" value="{{ $l->id }}" class="form-check-input layanan-checkbox" id="layanan-{{ $l->id }}" style="accent-color: #4caf50;">
                                     <label class="form-check-label" for="layanan-{{ $l->id }}">
                                         {{ $l->nama_layanan }} (Rp {{ number_format($l->harga_per_kg) }}/kg)
                                     </label>
@@ -274,9 +463,7 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <p>Apakah Anda yakin ingin menghapus pesanan ini?</p>
-                    </div>
+                    <div class="modal-body"><p>Apakah Anda yakin ingin menghapus pesanan ini?</p></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-danger">Hapus</button>
@@ -293,51 +480,40 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            // Verify jQuery is loaded
             if (typeof jQuery === 'undefined') {
                 console.error('jQuery is not loaded!');
             } else {
                 console.log('jQuery is loaded successfully');
             }
 
-            // Initialize Select2 for customer selection
             $('.select2').select2({
                 placeholder: "Cari Pelanggan...",
                 allowClear: true,
                 dropdownParent: $('#tambahPesananModal')
             });
 
-            // Handle checkbox change for enabling/disabling weight inputs
             $('.layanan-checkbox').on('change', function() {
                 var layananId = $(this).val();
                 var beratInput = $('#berat-' + layananId);
-
-                console.log('Checkbox changed, layananId:', layananId);
-                console.log('beratInput found:', beratInput.length > 0 ? 'Yes' : 'No');
-
                 if ($(this).is(':checked')) {
-                    console.log('Enabling berat input for layanan-' + layananId);
                     beratInput.prop('disabled', false);
                 } else {
-                    console.log('Disabling berat input for layanan-' + layananId);
                     beratInput.prop('disabled', true).val('');
                 }
             });
 
-            // Ensure modal resets checkboxes and inputs when closed
             $('#tambahPesananModal').on('hidden.bs.modal', function() {
                 $('.layanan-checkbox').prop('checked', false);
                 $('.berat-input').prop('disabled', true).val('');
                 $('.select2').val(null).trigger('change');
             });
 
-            // SweetAlert2 for session flash messages
             @if (session('success'))
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
                     text: '{{ session('success') }}',
-                    confirmButtonColor: '#28a745', // Match btn-success
+                    confirmButtonColor: '#28a745',
                     timer: 3000,
                     timerProgressBar: true
                 });
@@ -348,7 +524,7 @@
                     icon: 'error',
                     title: 'Gagal',
                     text: '{{ session('error') }}',
-                    confirmButtonColor: '#dc3545', // Match btn-danger
+                    confirmButtonColor: '#dc3545',
                     timer: 3000,
                     timerProgressBar: true
                 });
@@ -361,8 +537,8 @@
                 text: 'Apakah Anda yakin ingin menghapus pesanan ini?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#dc3545', // Match btn-danger
-                cancelButtonColor: '#6c757d', // Match btn-secondary
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Hapus',
                 cancelButtonText: 'Batal'
             }).then((result) => {
@@ -379,11 +555,11 @@
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.success || 'Pesanan berhasil dihapus.',
-                                confirmButtonColor: '#28a745', // Match btn-success
+                                confirmButtonColor: '#28a745',
                                 timer: 3000,
                                 timerProgressBar: true
                             }).then(() => {
-                                location.reload(); // Reload to update table
+                                location.reload();
                             });
                         },
                         error: function(xhr) {
@@ -391,7 +567,7 @@
                                 icon: 'error',
                                 title: 'Gagal',
                                 text: xhr.responseJSON?.error || 'Gagal menghapus pesanan.',
-                                confirmButtonColor: '#dc3545', // Match btn-danger
+                                confirmButtonColor: '#dc3545',
                                 timer: 3000,
                                 timerProgressBar: true
                             });
