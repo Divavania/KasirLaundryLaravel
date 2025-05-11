@@ -3,40 +3,32 @@
         background-color: #ffffff !important;
         border-bottom: 2px solid #d4edda !important;
     }
-
     .navbar-custom .navbar-brand {
         color: #28a745 !important;
         font-weight: bold;
     }
-
     .navbar-custom .nav-link {
         color: #28a745 !important;
         font-weight: 500;
         transition: 0.3s;
     }
-
     .navbar-custom .nav-link:hover {
         color: #1e7e34 !important;
     }
-
     .navbar-custom .dropdown-menu a.dropdown-item:hover {
         background-color: #d4edda !important;
         color: #155724 !important;
     }
-
     .navbar-custom .nav-link.logout {
         color: #dc3545 !important;
         font-weight: 600;
     }
-
     .navbar-custom .nav-link.logout:hover {
         color: #bd2130 !important;
     }
-
     .navbar-toggler {
         border: none;
     }
-
     .navbar-toggler-icon {
         background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path stroke="rgba(0, 0, 0, 0.7)" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/></svg>') !important;
     }
