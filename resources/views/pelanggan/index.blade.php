@@ -1,271 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Pelanggan</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 20px 0;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #e8f5e9, #f5f5f5);
-            font-family: 'Poppins', sans-serif;
-            position: relative;
-            overflow-y: auto;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="30" cy="30" r="20" fill="rgba(76,175,80,0.1)"/><circle cx="170" cy="50" r="15" fill="rgba(76,175,80,0.15)"/><circle cx="100" cy="150" r="25" fill="rgba(76,175,80,0.1)"/><circle cx="50" cy="100" r="10" fill="rgba(76,175,80,0.2)"/></svg>');
-            background-size: 300px;
-            opacity: 0.3;
-            z-index: -1;
-            animation: float 20s infinite linear;
-        }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
-        }
-        .customer-container {
-            background: #ffffff;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 800px;
-            max-width: 95%;
-            position: relative;
-            animation: fadeIn 0.8s ease forwards;
-            border: 1px solid rgba(76, 175, 80, 0.2);
-            margin: 20px auto;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .customer-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #4caf50;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #2e7d32;
-            font-weight: 700;
-            font-size: 28px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        h2::before {
-            content: '\f0c0';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            display: block;
-            font-size: 40px;
-            color: #4caf50;
-            margin-bottom: 10px;
-            opacity: 0.8;
-        }
-        .btn-success, .btn-primary, .btn-warning, .btn-danger, .btn-secondary {
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-success {
-            background: #4caf50;
-            border-color: #4caf50;
-        }
-        .btn-success:hover, .btn-primary:hover {
-            background: #2e7d32;
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
-            transform: translateY(-2px);
-        }
-        .btn-warning {
-            background: #fb8c00;
-            border-color: #fb8c00;
-        }
-        .btn-warning:hover {
-            background: #ef6c00;
-            box-shadow: 0 4px 12px rgba(251, 140, 0, 0.3);
-        }
-        .btn-danger {
-            background: #d32f2f;
-            border-color: #d32f2f;
-        }
-        .btn-danger:hover {
-            background: #b71c1c;
-            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
-        }
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        .btn:active::after {
-            width: 200px;
-            height: 200px;
-        }
-        .table {
-            background: #f8faf8;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .table-success {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-        .table-bordered {
-            border: 1px solid rgba(76, 175, 80, 0.2);
-        }
-        .table-bordered th, .table-bordered td {
-            border: 1px solid rgba(76, 175, 80, 0.2);
-        }
-        .alert-success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-            border-radius: 10px;
-            font-weight: 400;
-            padding: 12px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .modal-content {
-            border-radius: 12px;
-            border: 1px solid rgba(76, 175, 80, 0.2);
-        }
-        .modal-header {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
-        }
-        .form-control {
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            background-color: #f8faf8;
-            font-size: 14px;
-            padding: 10px 15px;
-            transition: all 0.3s ease;
-        }
-        .form-control:focus {
-            border-color: #2e7d32;
-            background-color: #fff;
-            box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
-            outline: none;
-        }
-        .close {
-            color: #2e7d32;
-            opacity: 0.8;
-        }
-        .close:hover {
-            opacity: 1;
-        }
-        @media (max-width: 768px) {
-            .customer-container {
-                padding: 30px 20px;
-                width: 95%;
-            }
-            h2 {
-                font-size: 24px;
-            }
-            h2::before {
-                font-size: 32px;
-            }
-            .btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="customer-container">
-        <h2>Kelola Pelanggan</h2>
+@extends('layouts.layout')
 
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+@section('title', 'Kelola Pelanggan - Khalifah Laundry')
 
-        <div class="mb-3 d-flex flex-wrap">
-            <a href="{{ route('dashboard') }}" class="btn btn-success d-flex align-items-center justify-content-center mr-2" style="padding: 8px; width: 40px;">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-            <button class="btn btn-success" data-toggle="modal" data-target="#tambahPelangganModal">Tambah Pelanggan</button>
+@section('pelanggan-active', 'active')
+
+@section('content')
+    <div class="content-header">
+        <div class="container-fluid">
+            <h1 class="m-0 text-success">Kelola Pelanggan</h1>
         </div>
-
-        <table class="table table-bordered">
-            <thead class="table-success">
-                <tr>
-                    <th>Nama</th>
-                    <th>No HP</th>
-                    <th>Alamat</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pelanggan as $item)
-                    <tr>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->no_hp }}</td>
-                        <td>{{ $item->alamat }}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPelangganModal{{ $item->id }}">Edit</button>
-                            <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
     </div>
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Pelanggan Management Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Daftar Pelanggan</h3>
+                </div>
+                <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-    <div class="modal fade" id="tambahPelangganModal" tabindex="-1" role="dialog" aria-labelledby="tambahPelangganModalLabel" aria-hidden="true">
+                    <div class="mb-3">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#tambahPelangganModal">
+                            <i class="fas fa-plus mr-1"></i> Tambah Pelanggan
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="bg-success">
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>No HP</th>
+                                    <th>Alamat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pelanggan as $item)
+                                    <tr>
+                                        <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->no_hp }}</td>
+                                        <td>{{ $item->alamat }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-warning" data-toggle="modal" data-target="#editPelangganModal{{ $item->id }}" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger delete-pelanggan-btn" data-id="{{ $item->id }}" title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tambah Pelanggan Modal -->
+    <div class="modal fade" id="tambahPelangganModal" tabindex="-1" role="dialog" aria-labelledby="tambahPelangganModalLabel">
         <div class="modal-dialog" role="document">
-            <form action="{{ route('pelanggan.store') }}" method="POST">
+            <form action="{{ route('pelanggan.store') }}" method="POST" id="tambahPelangganForm">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="tambahPelangganModalLabel">Tambah Pelanggan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">Tambah Pelanggan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">Nama</label>
+                        <div class="form-group">
+                            <label for="nama">Nama</label>
                             <input type="text" name="nama" class="form-control" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="no_hp" class="form-label">No HP</label>
+                        <div class="form-group">
+                            <label for="no_hp">No HP</label>
                             <input type="text" name="no_hp" class="form-control" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
                             <textarea name="alamat" class="form-control" required></textarea>
                         </div>
                     </div>
@@ -278,30 +101,31 @@
         </div>
     </div>
 
+    <!-- Edit Pelanggan Modals -->
     @foreach($pelanggan as $item)
-        <div class="modal fade" id="editPelangganModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editPelangganModalLabel{{ $item->id }}" aria-hidden="true">
+        <div class="modal fade" id="editPelangganModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editPelangganModalLabel{{ $item->id }}">
             <div class="modal-dialog" role="document">
-                <form action="{{ route('pelanggan.update', $item->id) }}" method="POST">
+                <form action="{{ route('pelanggan.update', $item->id) }}" method="POST" class="edit-pelanggan-form" data-id="{{ $item->id }}">
                     @csrf
                     @method('PUT')
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editPelangganModalLabel{{ $item->id }}">Edit Pelanggan</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title">Edit Pelanggan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="nama" class="form-label">Nama</label>
+                            <div class="form-group">
+                                <label for="nama">Nama</label>
                                 <input type="text" name="nama" class="form-control" value="{{ $item->nama }}" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="no_hp" class="form-label">No HP</label>
+                            <div class="form-group">
+                                <label for="no_hp">No HP</label>
                                 <input type="text" name="no_hp" class="form-control" value="{{ $item->no_hp }}" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="alamat" class="form-label">Alamat</label>
+                            <div class="form-group">
+                                <label for="alamat">Alamat</label>
                                 <textarea name="alamat" class="form-control" required>{{ $item->alamat }}</textarea>
                             </div>
                         </div>
@@ -314,8 +138,115 @@
             </div>
         </div>
     @endforeach
+@endsection
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.min.js"></script>
-</body>
-</html>
+@section('scripts')
+    <script>
+    $(document).ready(function() {
+        // Reusable function for handling form submissions
+        function handleFormSubmission(form, modalId, successMessage) {
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                timeout: 10000
+            }).done((response) => {
+                console.log('Success:', response);
+                if (modalId) $(`#${modalId}`).modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: response.success || successMessage,
+                    confirmButtonColor: '#28a745',
+                    customClass: {
+                        popup: 'swal2-custom',
+                        title: 'swal2-title-custom',
+                        content: 'swal2-content-custom'
+                    }
+                }).then(() => {
+                    location.reload();
+                });
+            }).fail((error) => {
+                console.log('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: error.responseJSON?.error || 'Gagal memproses pelanggan. Silakan coba lagi.',
+                    confirmButtonColor: '#28a745',
+                    customClass: {
+                        popup: 'swal2-custom',
+                        title: 'swal2-title-custom',
+                        content: 'swal2-content-custom'
+                    }
+                });
+            });
+        }
+
+        // Add Pelanggan
+        $('#tambahPelangganForm').on('submit', function(e) {
+            e.preventDefault();
+            handleFormSubmission($(this), 'tambahPelangganModal', 'Pelanggan berhasil ditambahkan.');
+        });
+
+        // Edit Pelanggan
+        $('.edit-pelanggan-form').on('submit', function(e) {
+            e.preventDefault();
+            const modalId = `editPelangganModal${$(this).data('id')}`;
+            handleFormSubmission($(this), modalId, 'Pelanggan berhasil diubah.');
+        });
+
+        // Delete Pelanggan
+        $('.delete-pelanggan-btn').on('click', function() {
+            const pelangganId = $(this).data('id');
+            Swal.fire({
+                title: 'Hapus Pelanggan',
+                text: 'Apakah Anda yakin ingin menghapus pelanggan ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                customClass: {
+                    popup: 'swal2-custom',
+                    title: 'swal2-title-custom',
+                    content: 'swal2-content-custom'
+                },
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return $.ajax({
+                        url: '{{ route('pelanggan.destroy', '') }}/' + pelangganId,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: 'DELETE'
+                        },
+                        timeout: 10000
+                    }).catch(error => {
+                        Swal.showValidationMessage(
+                            error.responseJSON?.error || 'Gagal menghapus pelanggan. Silakan coba lagi.'
+                        );
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: result.value.success || 'Pelanggan berhasil dihapus.',
+                        confirmButtonColor: '#28a745',
+                        customClass: {
+                            popup: 'swal2-custom',
+                            title: 'swal2-title-custom',
+                            content: 'swal2-content-custom'
+                        }
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            });
+        });
+    });
+    </script>
+@endsection

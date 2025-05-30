@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
 
 class AuthController extends Controller
 {
@@ -50,8 +48,10 @@ class AuthController extends Controller
             return back()->with('error', 'Akun Anda nonaktif.');
         }
 
+        // ✅ Login manual Laravel
         Auth::guard('web')->login($user);
 
+        // ✅ Arahkan ke dashboard sesuai role
         if ($user->role === 'superadmin') {
             return redirect()->route('superadmin.dashboard');
         } else {

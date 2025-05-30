@@ -13,6 +13,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $query = Pesanan::with(['pelanggan', 'layanan']);
+        $searchNotFound = false;
         
         if ($request->has('search') && $request->input('search') != '') {
             $search = $request->input('search');
@@ -27,12 +28,16 @@ class DashboardController extends Controller
 
         $pesanans = $query->get();
 
+         if ($request->has('search') && $request->input('search') != '' && $pesanans->isEmpty()) {
+            $searchNotFound = true;
+        }
+
         $pelanggan = Pelanggan::all();
         $layanan = Layanan::all();
 
         $totalPesanan = Pesanan::count();
         $totalSelesai = Pesanan::where('status', 'Selesai')->count();
 
-        return view('dashboard', compact('pesanans', 'pelanggan', 'layanan', 'totalPesanan', 'totalSelesai'));
-    }
+        return view('dashboard', compact('pesanans', 'pelanggan', 'layanan', 'totalPesanan', 'totalSelesai', 'searchNotFound'));
+    } 
 }
