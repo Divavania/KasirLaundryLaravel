@@ -76,7 +76,7 @@
             color: #a5d6a7 !important;
         }
         h2::before {
-            content: '\f7e4';
+            content: '\f291';
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
             display: block;
